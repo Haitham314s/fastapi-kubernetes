@@ -17,7 +17,7 @@ spec:
     spec:
       initContainers:
         - name: init-postgres-service
-          image: postgres:10.17
+          image: postgres:13
           command:
             [
               "sh",

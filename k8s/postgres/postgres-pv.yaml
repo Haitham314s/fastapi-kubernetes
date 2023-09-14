@@ -1,28 +1,14 @@
-kind: PersistentVolume
 apiVersion: v1
+kind: PersistentVolume
 metadata:
   name: postgres-pv
   namespace: ecommerce-fastapi
-  labels:
-    type: local
-    app: ecommerce
 spec:
-  persistentVolumeReclaimPolicy: Delete
-  storageClassName: local-storage
   capacity:
     storage: 2Gi
-  volumeMode: Filesystem
   accessModes:
-    - ReadWriteMany
-  local:
-    path: /postgres-data
-    # path: /run/desktop/mnt/host/e/postgres-data # <-- if running with docker desktop in windows (pointing to "e" drive)
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - minikube
-                # - docker-desktop # <-- name of the node
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  gcePersistentDisk:
+    pdName: postgres-disk
+    fsType: ext4
