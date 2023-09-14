@@ -2,7 +2,11 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: postgres-pvc
-  namespace: ecommerce-fastapi
+  namespace: {{ .Release.Namespace }}
+  labels:
+    type: local
+    app: ecommerce
+    version: {{ .Chart.AppVersion }}
 spec:
   accessModes:
     - ReadWriteOnce

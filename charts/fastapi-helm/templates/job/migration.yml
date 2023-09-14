@@ -1,8 +1,11 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: fastapi-migrations
-  namespace: ecommerce-fastapi
+  name: fastapi-migrations-{{ include "fastapi-helm.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: ecommerce-migration
+    version: {{ .Chart.AppVersion }}
 spec:
   ttlSecondsAfterFinished: 100
   template:
@@ -17,7 +20,7 @@ spec:
             aerich upgrade
           envFrom:
             - secretRef:
-                name: migration-secret
+                name: migration-secret-{{ include "fastapi-helm.fullname" . }}
       initContainers:
         - name: init-postgres-service
           image: postgres:13

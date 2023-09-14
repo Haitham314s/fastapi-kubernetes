@@ -1,21 +1,24 @@
 kind: StatefulSet
 apiVersion: apps/v1
 metadata:
-  name: postgres
-  namespace: ecommerce-fastapi
+  name: postgres-deployment-{{ include "fastapi-helm.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    version: {{ .Chart.AppVersion }}
 spec:
   serviceName: postgres-service
   replicas: 1
   selector:
     matchLabels:
-      app: postgres
+      app: postgres-container
   template:
     metadata:
       labels:
-        app: postgres
+        app: postgres-container
+        tier: backend
     spec:
       containers:
-        - name: postgres
+        - name: postgres-container
           image: postgres:13
           env:
             - name: POSTGRES_USER
@@ -23,7 +26,7 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
+                  name: postgres-secret-{{ include "fastapi-helm.fullname" . }}
                   key: password
             - name: PGDATA
               value: /var/lib/postgresql/data/pgdata

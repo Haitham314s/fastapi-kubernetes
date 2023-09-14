@@ -2,12 +2,10 @@ kind: Service
 apiVersion: v1
 metadata:
   name: postgres-service
-  namespace: ecommerce-fastapi
-  labels:
-    app: postgres
+  namespace: {{ .Release.Namespace }}
 spec:
   selector:
-    app: postgres
+    app: postgres-container
   ports:
     - port: 5432
   clusterIP: None

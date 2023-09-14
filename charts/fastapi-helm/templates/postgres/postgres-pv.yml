@@ -2,7 +2,11 @@ kind: PersistentVolume
 apiVersion: v1
 metadata:
   name: postgres-pv
-  namespace: ecommerce-fastapi
+  namespace: {{ .Release.Namespace }}
+  labels:
+    type: local
+    app: ecommerce
+    version: {{ .Chart.AppVersion }}
 spec:
   capacity:
     storage: 2Gi
