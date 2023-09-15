@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     app: ecommerce
-    version: {{.Chart.AppVersion}}
+    version: {{ .Chart.AppVersion }}
 spec:
   replicas: 1
   selector:
@@ -25,7 +25,6 @@ spec:
               "-c",
               "until nslookup redis-service.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for redis-service; sleep 2; done",
             ]
-
       containers:
         - image: haitham2169s/ecommerce-fastapi:1.0
           command: ["celery", "-A", "main.celery", "worker", "-l", "info"]

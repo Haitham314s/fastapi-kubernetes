@@ -13,11 +13,14 @@ spec:
       containers:
         - name: migration-container
           image: haitham2169s/ecommerce-fastapi:1.0
-          command: |
-            aerich init -t ecommerce.db.TORTOISE_ORM
-            aerich init-db
-            aerich migrate
-            aerich upgrade
+          command:
+            - sh
+            - -c
+            - |
+              aerich init -t ecommerce.db.TORTOISE_ORM
+              aerich init-db
+              aerich migrate
+              aerich upgrade
           envFrom:
             - secretRef:
                 name: migration-secret-{{ include "fastapi-helm.fullname" . }}
